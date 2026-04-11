@@ -27,8 +27,8 @@ export class PetalEvent extends Event {
     petal: Node = null;
 }
 
-@ccclass("Water")
-export class Water extends Component {
+@ccclass("WaterRender")
+export class WaterRender extends Component {
     _verts: { x: number; y: number }[] = [];
     _particleGroup: vPGroup = new vPGroup();
 
@@ -41,7 +41,10 @@ export class Water extends Component {
     @property(Graphics)
     g: Graphics = null!;
 
-    protected onLoad(): void { }
+    protected onLoad(): void {
+        this.MIN_DISTANCE = this.targetUIT.contentSize.width / 16
+    }
+
 
     protected onEnable(): void {
     }
@@ -82,21 +85,26 @@ export class Water extends Component {
         const waveInfo: IWaveInfo = {
             waveLength: 64,
             amplitude: 8,
-            frequency: 4,
+            frequency: 2,
             phase: 0,
             pos: this._touchUIPos
         }
-
 
         this.creatWave(waveInfo)
     }
 
     update(deltaTime: number) {
         // if (PREVIEW || EDITOR) this.draw();
-        this.vertSp?.markForUpdateRenderData();
+
     }
 
 
+    protected lateUpdate(dt: number): void {
+        this.updateWaves()
+        this.updateSurface()
+        this.updateVerticles();
+        this.vertSp?.markForUpdateRenderData();
+    }
     private updateVerticles() {
         if (
             this.vertSp == null ||
@@ -111,11 +119,6 @@ export class Water extends Component {
     }
 
 
-    protected lateUpdate(dt: number): void {
-        this.updateSurface()
-        this.updateVerticles();
-        this.updateWaves()
-    }
     _surface: vParticle[] = []
     creatParticleGroup(
         verts: { x: number; y: number }[],
@@ -150,8 +153,24 @@ export class Water extends Component {
 
 
     _waves: Wave[] = []
+    static MAX_WAVE_CNT: number = 128
+    static MIN_INTERVAL: number = 200
+    MIN_DISTANCE: number
     creatWave(waveInfo: IWaveInfo) {
+        //限制波浪数量
+        if (this._waves.length >= WaterRender.MAX_WAVE_CNT) {
+            this._waves.shift()
+        }
+        //创建波浪
         const wave = new Wave(waveInfo)
+        //限制波浪密度
+        if (this._waves.length > 0) {
+            const lastWave = this._waves.at(-1)
+            const deltaTime = wave._startTime - lastWave._startTime
+            const dist = Vec2.distance(lastWave.pos, wave.pos)
+            if (deltaTime < WaterRender.MIN_INTERVAL || dist < this.MIN_DISTANCE) return
+        }
+        //记录波浪
         this._waves.push(wave)
     }
     updateWaves() {
