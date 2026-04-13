@@ -42,16 +42,8 @@ export class WaterRender extends Component {
     g: Graphics = null!;
 
     protected onLoad(): void {
-        this.MIN_DISTANCE = this.targetUIT.contentSize.width / 16
+        this.MIN_DISTANCE = this.targetUIT.contentSize.width / 64
     }
-
-
-    protected onEnable(): void {
-    }
-
-    protected onDisable(): void {
-    }
-
 
     start() {
         this._verts = this.vertSp?.vertices;
@@ -95,7 +87,6 @@ export class WaterRender extends Component {
 
     update(deltaTime: number) {
         // if (PREVIEW || EDITOR) this.draw();
-
     }
 
 
@@ -181,9 +172,6 @@ export class WaterRender extends Component {
         let height: number = 0
         this._waves.forEach((w) => {
             const dis = Vec2.distance(w.pos, particle.pos)
-            // console.log('particle pos', particle.pos)
-            // console.log('wave origin', w.pos)
-            // console.log('dis ', dis)
             height += w.getHeightAt(dis)
         })
 
@@ -193,7 +181,7 @@ export class WaterRender extends Component {
     updateSurface() {
         this._surface.forEach((p) => {
             const h = this.getWaveHeightOfParticle(p)
-            p.pos.y = 512 + h
+            p.pos.y = this.targetUIT.contentSize.height + h
         })
     }
     //debug

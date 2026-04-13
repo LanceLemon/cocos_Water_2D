@@ -64,35 +64,34 @@ export class vParticle {
     unfreeze() {
         this.isStable = false;
     }
-
-    startTime: number;
-    startVelocity: Vec2 = new Vec2()
-    startPos: Vec2 = new Vec2()
-    elasticity: number = 32;
-    amplitude: number = 32
-    gamma: number
-    c: Vec2 = new Vec2()
-    nextPos: Vec2 = new Vec2()
-    T: number
-    A: Vec2 = new Vec2();
-    B: Vec2 = new Vec2();
-
-    startWaveAsSpring(startVelocity: Vec2) {
-
-        this.startTime = Date.now()
-        this.startVelocity.set(startVelocity)
-        this.startPos.set(this.pos)
-
-
-        this.gamma = 0.5 * Math.sqrt(4 * this.elasticity - vParticle.damping ** 2)
-        const v1 = new Vec2()
-        Vec2.multiplyScalar(v1, this.startPos, vParticle.damping / (2 * this.gamma))
-        const v2 = new Vec2()
-        Vec2.multiplyScalar(v2, this.startVelocity, 1 / this.gamma)
-
-        this.T = 2 * Math.PI / this.gamma
-
-    }
+    //
+    // startTime: number;
+    // startVelocity: Vec2 = new Vec2()
+    // startPos: Vec2 = new Vec2()
+    // elasticity: number = 32;
+    // amplitude: number = 32
+    // gamma: number
+    // c: Vec2 = new Vec2()
+    // nextPos: Vec2 = new Vec2()
+    // T: number
+    // A: Vec2 = new Vec2();
+    // B: Vec2 = new Vec2();
+    //
+    // startWaveAsSpring(startVelocity: Vec2) {
+    //
+    //     this.startTime = Date.now()
+    //     this.startVelocity.set(startVelocity)
+    //     this.startPos.set(this.pos)
+    //     
+    //     this.gamma = 0.5 * Math.sqrt(4 * this.elasticity - vParticle.damping ** 2)
+    //     const v1 = new Vec2()
+    //     Vec2.multiplyScalar(v1, this.startPos, vParticle.damping / (2 * this.gamma))
+    //     const v2 = new Vec2()
+    //     Vec2.multiplyScalar(v2, this.startVelocity, 1 / this.gamma)
+    //
+    //     this.T = 2 * Math.PI / this.gamma
+    //
+    // }
 
 
 }

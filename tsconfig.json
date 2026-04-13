@@ -1,9 +1,13 @@
 {
-  /* Base configuration. Do not edit this field. */
-  "extends": "./temp/tsconfig.cocos.json",
-
-  /* Add your custom configuration here. */
-  "compilerOptions": {
-    "strict": false
-  }
+    /* Base configuration. Do not edit this field. */
+    "extends": "./temp/tsconfig.cocos.json",
+    /* Add your custom configuration here. */
+    "compilerOptions": {
+        "strict": false,
+        "lib": [
+            "ES2022",
+            "DOM"
+        ],
+        "target": "ES2022"
+    }
 }
